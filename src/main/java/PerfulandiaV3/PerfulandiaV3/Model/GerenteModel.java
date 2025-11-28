@@ -22,4 +22,22 @@ public class GerenteModel {
     private String correo;
     private String contraseña;
     private String sucursal;
+
+    // Getters y setters explícitos (compatibilidad con IDEs sin procesador Lombok)
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getNombre() { return this.nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getCorreo() { return this.correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public String getContraseña() { return this.contraseña; }
+    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+
+    public String getSucursal() { return this.sucursal; }
+    public void setSucursal(String sucursal) { this.sucursal = sucursal; }
+
+    
 }

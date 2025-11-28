@@ -24,4 +24,28 @@ public class EmpleadoModel {
     private int idEmpleado;
     private String sucursal;
     private boolean activo = true;
+
+    // Getters y setters explícitos (compatibilidad con IDEs sin procesador Lombok)
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getNombre() { return this.nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getCorreo() { return this.correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public String getContraseña() { return this.contraseña; }
+    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+
+    public int getIdEmpleado() { return this.idEmpleado; }
+    public void setIdEmpleado(int idEmpleado) { this.idEmpleado = idEmpleado; }
+
+    public String getSucursal() { return this.sucursal; }
+    public void setSucursal(String sucursal) { this.sucursal = sucursal; }
+
+    public boolean isActivo() { return this.activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
+    
 }

@@ -22,6 +22,7 @@ public class GerenteController {
     @Autowired
     private GerenteService gerenteService;
     
+    
     @PostMapping
     public GerenteModel crear(@RequestBody GerenteModel gerente) {
         return gerenteService.crearGerente(gerente);

@@ -26,7 +26,6 @@ public class EmpleadoService {
     public EmpleadoModel actualizarEmpleado(int id, EmpleadoModel nuevo) {
         EmpleadoModel existente = empleadoRepository.findById(id).orElse(null);
         if (existente != null) {
-            existente.setId(nuevo.getId());
             existente.setNombre(nuevo.getNombre());
             existente.setCorreo(nuevo.getCorreo());
             existente.setContraseña(nuevo.getContraseña());

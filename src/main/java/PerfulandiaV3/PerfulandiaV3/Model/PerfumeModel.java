@@ -22,4 +22,20 @@ public class PerfumeModel {
     private String marca;
     private double precio;
     private int cantidad;
+
+    // Getters y setters explícitos (compatibilidad con IDEs sin procesador Lombok)
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getNombre() { return this.nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getMarca() { return this.marca; }
+    public void setMarca(String marca) { this.marca = marca; }
+
+    public double getPrecio() { return this.precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
+
+    public int getCantidad() { return this.cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 }
