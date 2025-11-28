@@ -1,2 +1,2 @@
 # SuperfumeSpringBoot
-Repositorio para el desarrollo del backend de superfume inicizalida en Springboot
+Repositorio para el desarrollo del backend de superfume inicializada en Springboot
