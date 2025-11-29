@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "usuarios")
 @Data
@@ -18,10 +20,14 @@ public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank
     private String nombre;
+    @NotBlank @Email
     private String correo;
+    @NotBlank
     private String rol;
-    private String contraseña;
+    @NotBlank
+    private String contrasena;
 
     // Getters y setters explícitos (compatibilidad con IDEs sin procesador Lombok)
     public int getId() { return this.id; }
@@ -36,6 +42,6 @@ public class UsuarioModel {
     public String getRol() { return this.rol; }
     public void setRol(String rol) { this.rol = rol; }
 
-    public String getContraseña() { return this.contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getContrasena() { return this.contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 }

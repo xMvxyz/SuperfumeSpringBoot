@@ -7,11 +7,10 @@ import java.util.List;
 import PerfulandiaV3.PerfulandiaV3.Model.EmpleadoModel;
 import PerfulandiaV3.PerfulandiaV3.Model.UsuarioModel;
 import PerfulandiaV3.PerfulandiaV3.Model.PerfumeModel;
-import PerfulandiaV3.PerfulandiaV3.Model.GerenteModel;
 import PerfulandiaV3.PerfulandiaV3.Service.EmpleadoService;
 import PerfulandiaV3.PerfulandiaV3.Service.UsuarioService;
 import PerfulandiaV3.PerfulandiaV3.Service.PerfumeService;
-import PerfulandiaV3.PerfulandiaV3.Service.GerenteService;
+ 
 
 @RestController
 @RequestMapping("/api")
@@ -22,8 +21,7 @@ public class ApiController {
     private UsuarioService usuarioService;
     @Autowired
     private PerfumeService perfumeService;
-    @Autowired
-    private GerenteService gerenteService;
+    
 
     // --- Empleado ---
     @GetMapping("/empleados")
@@ -91,25 +89,5 @@ public class ApiController {
         perfumeService.eliminarPerfume(id);
     }
 
-    // --- Gerente ---
-    @GetMapping("/gerentes")
-    public List<GerenteModel> getGerentes() {
-        return gerenteService.obtenerTodos();
-    }
-    @GetMapping("/gerentes/{id}")
-    public GerenteModel getGerente(@PathVariable int id) {
-        return gerenteService.buscarPorId(id);
-    }
-    @PostMapping("/gerentes")
-    public GerenteModel createGerente(@RequestBody GerenteModel gerente) {
-        return gerenteService.crearGerente(gerente);
-    }
-    @PutMapping("/gerentes/{id}")
-    public GerenteModel updateGerente(@PathVariable int id, @RequestBody GerenteModel gerente) {
-        return gerenteService.actualizarGerente(id, gerente);
-    }
-    @DeleteMapping("/gerentes/{id}")
-    public void deleteGerente(@PathVariable int id) {
-        gerenteService.eliminarUsuario(id);
-    }
+    
 }

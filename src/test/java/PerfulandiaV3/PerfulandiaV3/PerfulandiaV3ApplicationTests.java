@@ -11,9 +11,7 @@ import PerfulandiaV3.PerfulandiaV3.Model.PerfumeModel;
 import PerfulandiaV3.PerfulandiaV3.Repository.UsuarioRepository;
 import PerfulandiaV3.PerfulandiaV3.Service.UsuarioService;
 import PerfulandiaV3.PerfulandiaV3.Model.UsuarioModel;
-import PerfulandiaV3.PerfulandiaV3.Repository.GerenteRepository;
-import PerfulandiaV3.PerfulandiaV3.Service.GerenteService;
-import PerfulandiaV3.PerfulandiaV3.Model.GerenteModel;
+
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -44,11 +42,7 @@ class PerfulandiaV3ApplicationTests {
     @InjectMocks
     private UsuarioService usuarioService;
 
-    @Mock
-    private GerenteRepository gerenteRepository;
-
-    @InjectMocks
-    private GerenteService gerenteService;
+    
 
     public  PerfulandiaV3ApplicationTests() {
         MockitoAnnotations.openMocks(this);
@@ -65,7 +59,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertEquals(perfumes, resultado);
         verify(perfumeRepository, times(1)).findAll();
-        System.out.println("✅ testObtenerTodosPerfumes pasó correctamente");
+        System.out.println("testObtenerTodosPerfumes pasó correctamente");
     }
 
     @Test
@@ -80,7 +74,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Aqua", resultado.getNombre());
         verify(perfumeRepository, times(1)).findById(1);
-        System.out.println("✅ testObtenerPerfumePorId pasó correctamente");
+        System.out.println("testObtenerPerfumePorId pasó correctamente");
     }
 
     @Test
@@ -91,7 +85,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertNull(resultado);
         verify(perfumeRepository, times(1)).findById(99);
-        System.out.println("✅ testObtenerPerfumePorIdNoExiste pasó correctamente");
+        System.out.println("testObtenerPerfumePorIdNoExiste pasó correctamente");
     }
 
     @Test
@@ -106,7 +100,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Blue", resultado.getNombre());
         verify(perfumeRepository, times(1)).save(perfume);
-        System.out.println("✅ testCrearPerfume pasó correctamente");
+        System.out.println("testCrearPerfume pasó correctamente");
     }
 
     @Test
@@ -127,7 +121,7 @@ class PerfulandiaV3ApplicationTests {
         assertEquals("New", resultado.getNombre());
         verify(perfumeRepository, times(1)).findById(id);
         verify(perfumeRepository, times(1)).save(any(PerfumeModel.class));
-        System.out.println("✅ testActualizarPerfume pasó correctamente");
+        System.out.println("testActualizarPerfume pasó correctamente");
     }
 
     @Test
@@ -143,7 +137,7 @@ class PerfulandiaV3ApplicationTests {
         assertNull(resultado);
         verify(perfumeRepository, times(1)).findById(id);
         verify(perfumeRepository, never()).save(any(PerfumeModel.class));
-        System.out.println("✅ testActualizarPerfumeNoExiste pasó correctamente");
+        System.out.println("testActualizarPerfumeNoExiste pasó correctamente");
     }
 
     @Test
@@ -154,7 +148,7 @@ class PerfulandiaV3ApplicationTests {
         perfumeService.eliminarPerfume(id);
 
         verify(perfumeRepository, times(1)).deleteById(id);
-        System.out.println("✅ testEliminarPerfume pasó correctamente");
+        System.out.println("testEliminarPerfume pasó correctamente");
     }
 
 /*-----------------------Usuarios----------------------------------------------*/
@@ -169,7 +163,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertEquals(usuarios, resultado);
         verify(usuarioRepository, times(1)).findAll();
-        System.out.println("✅ testObtenerTodosUsuarios pasó correctamente");
+        System.out.println("testObtenerTodosUsuarios pasó correctamente");
     }
 
     @Test
@@ -184,7 +178,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Carlos", resultado.getNombre());
         verify(usuarioRepository, times(1)).findById(1);
-        System.out.println("✅ testObtenerUsuarioPorId pasó correctamente");
+        System.out.println("testObtenerUsuarioPorId pasó correctamente");
     }
 
     @Test
@@ -195,7 +189,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertNull(resultado);
         verify(usuarioRepository, times(1)).findById(99);
-        System.out.println("✅ testObtenerUsuarioPorIdNoExiste pasó correctamente");
+        System.out.println("testObtenerUsuarioPorIdNoExiste pasó correctamente");
     }
 
     @Test
@@ -210,7 +204,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Lucia", resultado.getNombre());
         verify(usuarioRepository, times(1)).save(usuario);
-        System.out.println("✅ testCrearUsuario pasó correctamente");
+        System.out.println("testCrearUsuario pasó correctamente");
     }
 
     @Test
@@ -231,7 +225,7 @@ class PerfulandiaV3ApplicationTests {
         assertEquals("Mario Actualizado", resultado.getNombre());
         verify(usuarioRepository, times(1)).findById(id);
         verify(usuarioRepository, times(1)).save(any(UsuarioModel.class));
-        System.out.println("✅ testActualizarUsuario pasó correctamente");
+        System.out.println("testActualizarUsuario pasó correctamente");
     }
 
     @Test
@@ -247,7 +241,7 @@ class PerfulandiaV3ApplicationTests {
         assertNull(resultado);
         verify(usuarioRepository, times(1)).findById(id);
         verify(usuarioRepository, never()).save(any(UsuarioModel.class));
-        System.out.println("✅ testActualizarUsuarioNoExiste pasó correctamente");
+        System.out.println("testActualizarUsuarioNoExiste pasó correctamente");
     }
 
     @Test
@@ -258,111 +252,7 @@ class PerfulandiaV3ApplicationTests {
         usuarioService.eliminarUsuario(id);
 
         verify(usuarioRepository, times(1)).deleteById(id);
-        System.out.println("✅ testEliminarUsuario pasó correctamente");
-    }
-
-/*-----------------------Gerentes----------------------------------------------*/
-
-    @Test
-    void testObtenerTodosGerentes() {
-        List<GerenteModel> gerentes = new ArrayList<>();
-        gerentes.add(new GerenteModel());
-        when(gerenteRepository.findAll()).thenReturn(gerentes);
-
-        List<GerenteModel> resultado = gerenteService.obtenerTodos();
-
-        assertEquals(gerentes, resultado);
-        verify(gerenteRepository, times(1)).findAll();
-        System.out.println("✅ testObtenerTodosGerentes pasó correctamente");
-    }
-
-    @Test
-    void testObtenerGerentePorId() {
-        GerenteModel gerente = new GerenteModel();
-        gerente.setId(1);
-        gerente.setNombre("Laura");
-        when(gerenteRepository.findById(1)).thenReturn(Optional.of(gerente));
-
-        GerenteModel resultado = gerenteService.buscarPorId(1);
-
-        assertNotNull(resultado);
-        assertEquals("Laura", resultado.getNombre());
-        verify(gerenteRepository, times(1)).findById(1);
-        System.out.println("✅ testObtenerGerentePorId pasó correctamente");
-    }
-
-    @Test
-    void testObtenerGerentePorIdNoExiste() {
-        when(gerenteRepository.findById(99)).thenReturn(Optional.empty());
-
-        GerenteModel resultado = gerenteService.buscarPorId(99);
-
-        assertNull(resultado);
-        verify(gerenteRepository, times(1)).findById(99);
-        System.out.println("✅ testObtenerGerentePorIdNoExiste pasó correctamente");
-    }
-
-    @Test
-    void testCrearGerente() {
-        GerenteModel gerente = new GerenteModel();
-        gerente.setId(2);
-        gerente.setNombre("Luis");
-        when(gerenteRepository.save(gerente)).thenReturn(gerente);
-
-        GerenteModel resultado = gerenteService.crearGerente(gerente);
-
-        assertNotNull(resultado);
-        assertEquals("Luis", resultado.getNombre());
-        verify(gerenteRepository, times(1)).save(gerente);
-        System.out.println("✅ testCrearGerente pasó correctamente");
-    }
-
-    @Test
-    void testActualizarGerente() {
-        int id = 3;
-        GerenteModel existente = new GerenteModel();
-        existente.setId(id);
-        existente.setNombre("Marta");
-        GerenteModel nuevo = new GerenteModel();
-        nuevo.setId(id);
-        nuevo.setNombre("Marta Actualizada");
-        when(gerenteRepository.findById(id)).thenReturn(Optional.of(existente));
-        when(gerenteRepository.save(any(GerenteModel.class))).thenReturn(nuevo);
-
-        GerenteModel resultado = gerenteService.actualizarGerente(id, nuevo);
-
-        assertNotNull(resultado);
-        assertEquals("Marta Actualizada", resultado.getNombre());
-        verify(gerenteRepository, times(1)).findById(id);
-        verify(gerenteRepository, times(1)).save(any(GerenteModel.class));
-        System.out.println("✅ testActualizarGerente pasó correctamente");
-    }
-
-    @Test
-    void testActualizarGerenteNoExiste() {
-        int id = 99;
-        GerenteModel nuevo = new GerenteModel();
-        nuevo.setId(id);
-        nuevo.setNombre("No Existe");
-        when(gerenteRepository.findById(id)).thenReturn(Optional.empty());
-
-        GerenteModel resultado = gerenteService.actualizarGerente(id, nuevo);
-
-        assertNull(resultado);
-        verify(gerenteRepository, times(1)).findById(id);
-        verify(gerenteRepository, never()).save(any(GerenteModel.class));
-        System.out.println("✅ testActualizarGerenteNoExiste pasó correctamente");
-    }
-
-    @Test
-    void testEliminarGerente() {
-        int id = 4;
-        doNothing().when(gerenteRepository).deleteById(id);
-
-        gerenteService.eliminarUsuario(id);
-
-        verify(gerenteRepository, times(1)).deleteById(id);
-        System.out.println("✅ testEliminarGerente pasó correctamente");
+        System.out.println("testEliminarUsuario pasó correctamente");
     }
 
 /*-----------------------Empleados----------------------------------------------*/
@@ -377,7 +267,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertEquals(empleados, resultado);
         verify(empleadoRepository, times(1)).findAll();
-        System.out.println("✅ testObtenerTodosEmpleados pasó correctamente");
+        System.out.println("testObtenerTodosEmpleados pasó correctamente");
     }
 
     @Test
@@ -392,7 +282,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Juan", resultado.getNombre());
         verify(empleadoRepository, times(1)).findById(1);
-        System.out.println("✅ testObtenerEmpleadoPorId pasó correctamente");
+        System.out.println("testObtenerEmpleadoPorId pasó correctamente");
     }
 
     @Test
@@ -403,7 +293,7 @@ class PerfulandiaV3ApplicationTests {
 
         assertNull(resultado);
         verify(empleadoRepository, times(1)).findById(99);
-        System.out.println("✅ testObtenerEmpleadoPorIdNoExiste pasó correctamente");
+        System.out.println("testObtenerEmpleadoPorIdNoExiste pasó correctamente");
     }
 
     @Test
@@ -418,7 +308,7 @@ class PerfulandiaV3ApplicationTests {
         assertNotNull(resultado);
         assertEquals("Ana", resultado.getNombre());
         verify(empleadoRepository, times(1)).save(empleado);
-        System.out.println("✅ testCrearEmpleado pasó correctamente");
+        System.out.println("testCrearEmpleado pasó correctamente");
     }
 
     @Test
@@ -439,7 +329,7 @@ class PerfulandiaV3ApplicationTests {
         assertEquals("Pedro Actualizado", resultado.getNombre());
         verify(empleadoRepository, times(1)).findById(id);
         verify(empleadoRepository, times(1)).save(any(EmpleadoModel.class));
-        System.out.println("✅ testActualizarEmpleado pasó correctamente");
+        System.out.println("testActualizarEmpleado pasó correctamente");
     }
 
     @Test
@@ -455,7 +345,7 @@ class PerfulandiaV3ApplicationTests {
         assertNull(resultado);
         verify(empleadoRepository, times(1)).findById(id);
         verify(empleadoRepository, never()).save(any(EmpleadoModel.class));
-        System.out.println("✅ testActualizarEmpleadoNoExiste pasó correctamente");
+        System.out.println("testActualizarEmpleadoNoExiste pasó correctamente");
     }
 
     @Test
@@ -466,6 +356,6 @@ class PerfulandiaV3ApplicationTests {
         empleadoService.eliminarUsuario(id);
 
         verify(empleadoRepository, times(1)).deleteById(id);
-        System.out.println("✅ testEliminarEmpleado pasó correctamente");
+        System.out.println("testEliminarEmpleado pasó correctamente");
     }
 }

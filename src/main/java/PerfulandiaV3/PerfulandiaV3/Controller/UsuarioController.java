@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import PerfulandiaV3.PerfulandiaV3.Model.UsuarioModel;
 import PerfulandiaV3.PerfulandiaV3.Service.UsuarioService;
+import PerfulandiaV3.PerfulandiaV3.Dto.UsuarioDto;
+import jakarta.validation.Valid;
+import PerfulandiaV3.PerfulandiaV3.Mapper.UsuarioMapper;
 
 @RestController
 @RequestMapping("/usuario")
@@ -23,8 +26,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public UsuarioModel crear(@RequestBody UsuarioModel usuario) {
-        return usuarioService.crearUsuario(usuario);
+    public UsuarioModel crear(@Valid @RequestBody UsuarioDto usuarioDto) {
+        return usuarioService.crearUsuario(UsuarioMapper.toEntity(usuarioDto));
     }
 
     @GetMapping
@@ -52,8 +55,8 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public UsuarioModel actualizarUsuario(@PathVariable int id, @RequestBody UsuarioModel nuevo) {
-        return usuarioService.actualizarUsuario(id, nuevo);
+    public UsuarioModel actualizarUsuario(@PathVariable int id, @Valid @RequestBody UsuarioDto nuevoDto) {
+        return usuarioService.actualizarUsuario(id, UsuarioMapper.toEntity(nuevoDto));
     }
 
     @DeleteMapping("/{id}")

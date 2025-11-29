@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "empleados")
 @Data
@@ -18,10 +20,14 @@ public class EmpleadoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank
     private String nombre;
+    @NotBlank @Email
     private String correo;
-    private String contraseña;
+    @NotBlank
+    private String contrasena;
     private int idEmpleado;
+    @NotBlank
     private String sucursal;
     private boolean activo = true;
 
@@ -35,8 +41,8 @@ public class EmpleadoModel {
     public String getCorreo() { return this.correo; }
     public void setCorreo(String correo) { this.correo = correo; }
 
-    public String getContraseña() { return this.contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getContrasena() { return this.contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 
     public int getIdEmpleado() { return this.idEmpleado; }
     public void setIdEmpleado(int idEmpleado) { this.idEmpleado = idEmpleado; }

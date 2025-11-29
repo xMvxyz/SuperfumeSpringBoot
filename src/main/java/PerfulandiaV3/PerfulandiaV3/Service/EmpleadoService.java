@@ -27,8 +27,8 @@ public class EmpleadoService {
         EmpleadoModel existente = empleadoRepository.findById(id).orElse(null);
         if (existente != null) {
             existente.setNombre(nuevo.getNombre());
-            existente.setCorreo(nuevo.getCorreo());
-            existente.setContraseña(nuevo.getContraseña());
+                existente.setCorreo(nuevo.getCorreo());
+                existente.setContrasena(nuevo.getContrasena());
             existente.setIdEmpleado(nuevo.getIdEmpleado());
             existente.setSucursal(nuevo.getSucursal());
             return empleadoRepository.save(existente);

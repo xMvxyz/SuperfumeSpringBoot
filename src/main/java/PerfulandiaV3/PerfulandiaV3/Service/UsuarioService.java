@@ -30,7 +30,7 @@ public class UsuarioService {
             existente.setNombre(nuevo.getNombre());
             existente.setCorreo(nuevo.getCorreo());
             existente.setRol(nuevo.getRol());
-            existente.setContraseña(nuevo.getContraseña());
+            existente.setContrasena(nuevo.getContrasena());
             return usuarioRepository.save(existente);
         }
         return null;

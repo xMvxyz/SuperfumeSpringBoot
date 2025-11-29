@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import PerfulandiaV3.PerfulandiaV3.Model.PerfumeModel;
 import PerfulandiaV3.PerfulandiaV3.Service.PerfumeService;
+import PerfulandiaV3.PerfulandiaV3.Dto.PerfumeDto;
+import jakarta.validation.Valid;
+import PerfulandiaV3.PerfulandiaV3.Mapper.PerfumeMapper;
 
 @RestController
 @RequestMapping("/Perfume")
@@ -35,8 +38,8 @@ public class PerfumeController {
     }
 
     @PostMapping
-    public PerfumeModel crear(@RequestBody PerfumeModel perfume) {
-        return perfumeService.crearPerfume(perfume);
+    public PerfumeModel crear(@Valid @RequestBody PerfumeDto perfumeDto) {
+        return perfumeService.crearPerfume(PerfumeMapper.toEntity(perfumeDto));
     }
 
     @GetMapping("/{id}")
@@ -52,8 +55,8 @@ public class PerfumeController {
     }
 
     @PutMapping("/{id}")
-    public PerfumeModel actualizar(@PathVariable int id, @RequestBody PerfumeModel perfume) {
-        return perfumeService.actualizarPerfume(id, perfume);
+    public PerfumeModel actualizar(@PathVariable int id, @Valid @RequestBody PerfumeDto perfumeDto) {
+        return perfumeService.actualizarPerfume(id, PerfumeMapper.toEntity(perfumeDto));
     }
 
     @DeleteMapping("/{id}")

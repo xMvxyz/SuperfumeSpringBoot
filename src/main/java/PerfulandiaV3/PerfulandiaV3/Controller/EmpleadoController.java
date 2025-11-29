@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import PerfulandiaV3.PerfulandiaV3.Model.EmpleadoModel;
 import PerfulandiaV3.PerfulandiaV3.Service.EmpleadoService;
+import PerfulandiaV3.PerfulandiaV3.Dto.EmpleadoDto;
+import jakarta.validation.Valid;
+import PerfulandiaV3.PerfulandiaV3.Mapper.EmpleadoMapper;
 
 @RestController
 @RequestMapping("/Empleado")
@@ -24,8 +27,8 @@ public class EmpleadoController {
     @Autowired
     private EmpleadoService empleadoService;
     @PostMapping
-    public EmpleadoModel crear(@RequestBody EmpleadoModel empleado) {
-        return empleadoService.crearEmpleado(empleado);
+    public EmpleadoModel crear(@Valid @RequestBody EmpleadoDto empleadoDto) {
+        return empleadoService.crearEmpleado(EmpleadoMapper.toEntity(empleadoDto));
     }
     
     @GetMapping
@@ -41,8 +44,8 @@ public class EmpleadoController {
     }
     
     @PutMapping("/{id}")
-    public EmpleadoModel actualizarEmpleado(@PathVariable int id, @RequestBody EmpleadoModel nuevo) {
-        return empleadoService.actualizarEmpleado(id, nuevo);
+    public EmpleadoModel actualizarEmpleado(@PathVariable int id, @Valid @RequestBody EmpleadoDto nuevoDto) {
+        return empleadoService.actualizarEmpleado(id, EmpleadoMapper.toEntity(nuevoDto));
     }
 
     @DeleteMapping("/{id}")
