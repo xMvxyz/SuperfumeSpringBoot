@@ -8,10 +8,10 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>PerfulandiaV3</groupId>
-	<artifactId>PerfulandiaV3</artifactId>
+	<groupId>com.superfume</groupId>
+	<artifactId>Superfume</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PerfulandiaV3</name>
+	<name>Superfume</name>
 	<description>Pagina web de perfulandia</description>
 	<properties>
 		<java.version>17</java.version>
