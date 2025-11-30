@@ -1,21 +1,32 @@
 package Superfume.Superfume.Mapper;
 
-import Superfume.Superfume.Dto.PerfumeDto;
+import Superfume.Superfume.Dto.request.PerfumeRequestDto;
+import Superfume.Superfume.Dto.response.PerfumeResponseDto;
 import Superfume.Superfume.Model.PerfumeModel;
 
 public class PerfumeMapper {
-    public static PerfumeModel toEntity(PerfumeDto dto) {
+    public static PerfumeModel toEntity(PerfumeRequestDto dto) {
         if (dto == null) return null;
-        return new PerfumeModel(0, dto.getNombre(), dto.getMarca(), dto.getPrecio(), dto.getCantidad());
+        PerfumeModel p = new PerfumeModel();
+        p.setNombre(dto.getNombre());
+        p.setMarca(dto.getMarca());
+        p.setPrecio(dto.getPrecio());
+        p.setStock(dto.getStock());
+        p.setDescripcion(dto.getDescripcion());
+        p.setCategoria(dto.getCategoria());
+        return p;
     }
 
-    public static PerfumeDto toDto(PerfumeModel p) {
+    public static PerfumeResponseDto toResponseDto(PerfumeModel p) {
         if (p == null) return null;
-        PerfumeDto dto = new PerfumeDto();
+        PerfumeResponseDto dto = new PerfumeResponseDto();
+        dto.setId(p.getId());
         dto.setNombre(p.getNombre());
         dto.setMarca(p.getMarca());
         dto.setPrecio(p.getPrecio());
-        dto.setCantidad(p.getCantidad());
+        dto.setStock(p.getStock());
+        dto.setDescripcion(p.getDescripcion());
+        dto.setCategoria(p.getCategoria());
         return dto;
     }
 }

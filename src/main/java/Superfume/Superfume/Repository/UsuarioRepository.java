@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository <UsuarioModel, Integer>{
-
+    UsuarioModel findByCorreo(String correo);
 }

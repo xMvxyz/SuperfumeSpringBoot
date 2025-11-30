@@ -31,6 +31,8 @@ public class UsuarioService {
             existente.setCorreo(nuevo.getCorreo());
             existente.setRol(nuevo.getRol());
             existente.setContrasena(nuevo.getContrasena());
+            existente.setTelefono(nuevo.getTelefono());
+            existente.setDireccion(nuevo.getDireccion());
             return usuarioRepository.save(existente);
         }
         return null;
@@ -42,5 +44,9 @@ public class UsuarioService {
 
     public UsuarioModel buscarPorId(int id) {
         return usuarioRepository.findById(id).orElse(null);
+    }
+
+    public UsuarioModel buscarPorCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
     }
 }

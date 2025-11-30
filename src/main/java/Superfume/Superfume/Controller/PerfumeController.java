@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import Superfume.Superfume.Dto.request.PerfumeRequestDto;
+import Superfume.Superfume.Dto.response.PerfumeResponseDto;
 import Superfume.Superfume.Model.PerfumeModel;
 import Superfume.Superfume.Service.PerfumeService;
-import Superfume.Superfume.Dto.PerfumeDto;
 import jakarta.validation.Valid;
 import Superfume.Superfume.Mapper.PerfumeMapper;
 
@@ -26,8 +27,9 @@ public class PerfumeController {
     private PerfumeService perfumeService;
 
     @GetMapping
-    public CollectionModel<EntityModel<PerfumeModel>> listar() {
+    public CollectionModel<EntityModel<PerfumeResponseDto>> listar() {
         var perfumes = perfumeService.obtenerTodos().stream()
+            .map(PerfumeMapper::toResponseDto)
             .map(perfume -> EntityModel.of(perfume,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).buscarPorId(perfume.getId())).withSelfRel(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).listar()).withRel("perfumes")
@@ -38,25 +40,28 @@ public class PerfumeController {
     }
 
     @PostMapping
-    public PerfumeModel crear(@Valid @RequestBody PerfumeDto perfumeDto) {
-        return perfumeService.crearPerfume(PerfumeMapper.toEntity(perfumeDto));
+    public PerfumeResponseDto crear(@Valid @RequestBody PerfumeRequestDto perfumeDto) {
+        PerfumeModel perfume = perfumeService.crearPerfume(PerfumeMapper.toEntity(perfumeDto));
+        return PerfumeMapper.toResponseDto(perfume);
     }
 
     @GetMapping("/{id}")
-    public EntityModel<PerfumeModel> buscarPorId(@PathVariable int id) {
+    public EntityModel<PerfumeResponseDto> buscarPorId(@PathVariable int id) {
         PerfumeModel perfume = perfumeService.buscarPorId(id);
         if (perfume == null) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Perfume no encontrado");
         }
-        return EntityModel.of(perfume,
+        PerfumeResponseDto dto = PerfumeMapper.toResponseDto(perfume);
+        return EntityModel.of(dto,
             WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).buscarPorId(id)).withSelfRel(),
             WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).listar()).withRel("perfumes")
         );
     }
 
     @PutMapping("/{id}")
-    public PerfumeModel actualizar(@PathVariable int id, @Valid @RequestBody PerfumeDto perfumeDto) {
-        return perfumeService.actualizarPerfume(id, PerfumeMapper.toEntity(perfumeDto));
+    public PerfumeResponseDto actualizar(@PathVariable int id, @Valid @RequestBody PerfumeRequestDto perfumeDto) {
+        PerfumeModel perfume = perfumeService.actualizarPerfume(id, PerfumeMapper.toEntity(perfumeDto));
+        return PerfumeMapper.toResponseDto(perfume);
     }
 
     @DeleteMapping("/{id}")

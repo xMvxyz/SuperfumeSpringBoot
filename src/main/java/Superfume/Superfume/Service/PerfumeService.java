@@ -30,7 +30,9 @@ public class PerfumeService {
             existente.setNombre(nuevo.getNombre());
             existente.setMarca(nuevo.getMarca());
             existente.setPrecio(nuevo.getPrecio());
-            existente.setCantidad(nuevo.getCantidad());
+            existente.setStock(nuevo.getStock());
+            existente.setDescripcion(nuevo.getDescripcion());
+            existente.setCategoria(nuevo.getCategoria());
             return perfumeRepository.save(existente);
         }
         return null;

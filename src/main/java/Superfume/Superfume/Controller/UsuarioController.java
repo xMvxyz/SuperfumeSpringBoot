@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import Superfume.Superfume.Dto.request.UsuarioRequestDto;
+import Superfume.Superfume.Dto.response.UsuarioResponseDto;
 import Superfume.Superfume.Model.RolModel;
 import Superfume.Superfume.Model.UsuarioModel;
 import Superfume.Superfume.Repository.RolRepository;
 import Superfume.Superfume.Service.UsuarioService;
-import Superfume.Superfume.Dto.UsuarioDto;
 import jakarta.validation.Valid;
 import Superfume.Superfume.Mapper.UsuarioMapper;
 
@@ -31,16 +32,18 @@ public class UsuarioController {
     private RolRepository rolRepository;
 
     @PostMapping
-    public UsuarioModel crear(@Valid @RequestBody UsuarioDto usuarioDto) {
+    public UsuarioResponseDto crear(@Valid @RequestBody UsuarioRequestDto usuarioDto) {
         RolModel rol = rolRepository.findById(usuarioDto.getRolId())
             .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado"));
-        return usuarioService.crearUsuario(UsuarioMapper.toEntity(usuarioDto, rol));
+        UsuarioModel usuario = usuarioService.crearUsuario(UsuarioMapper.toEntity(usuarioDto, rol));
+        return UsuarioMapper.toResponseDto(usuario);
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<UsuarioModel>> listar() {
+    public CollectionModel<EntityModel<UsuarioResponseDto>> listar() {
         var usuarios = usuarioService.obtenerTodos().stream()
+            .map(UsuarioMapper::toResponseDto)
             .map(usuario -> EntityModel.of(usuario,
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscarPorId(usuario.getId())).withSelfRel(),
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).listar()).withRel("usuarios")
@@ -51,23 +54,25 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public EntityModel<UsuarioModel> buscarPorId(@PathVariable int id) {
+    public EntityModel<UsuarioResponseDto> buscarPorId(@PathVariable int id) {
         UsuarioModel usuario = usuarioService.buscarPorId(id);
         if (usuario == null) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Usuario no encontrado");
         }
-        return EntityModel.of(usuario,
+        UsuarioResponseDto dto = UsuarioMapper.toResponseDto(usuario);
+        return EntityModel.of(dto,
             WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscarPorId(id)).withSelfRel(),
             WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).listar()).withRel("usuarios")
         );
     }
 
     @PutMapping("/{id}")
-    public UsuarioModel actualizarUsuario(@PathVariable int id, @Valid @RequestBody UsuarioDto nuevoDto) {
+    public UsuarioResponseDto actualizarUsuario(@PathVariable int id, @Valid @RequestBody UsuarioRequestDto nuevoDto) {
         RolModel rol = rolRepository.findById(nuevoDto.getRolId())
             .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado"));
-        return usuarioService.actualizarUsuario(id, UsuarioMapper.toEntity(nuevoDto, rol));
+        UsuarioModel usuario = usuarioService.actualizarUsuario(id, UsuarioMapper.toEntity(nuevoDto, rol));
+        return UsuarioMapper.toResponseDto(usuario);
     }
 
     @DeleteMapping("/{id}")
