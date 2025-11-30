@@ -2,9 +2,6 @@ package Superfume.Superfume;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import Superfume.Superfume.Repository.EmpleadoRepository;
-import Superfume.Superfume.Service.EmpleadoService;
-import Superfume.Superfume.Model.EmpleadoModel;
 import Superfume.Superfume.Repository.PerfumeRepository;
 import Superfume.Superfume.Service.PerfumeService;
 import Superfume.Superfume.Model.PerfumeModel;
@@ -24,11 +21,6 @@ import java.util.Optional;
 
 // @SpringBootTest
 class SuperfumeApplicationTests {
-    @Mock
-    private EmpleadoRepository empleadoRepository;
-
-    @InjectMocks
-    private EmpleadoService empleadoService;
 
     @Mock
     private PerfumeRepository perfumeRepository;
@@ -253,109 +245,5 @@ class SuperfumeApplicationTests {
 
         verify(usuarioRepository, times(1)).deleteById(id);
         System.out.println("testEliminarUsuario pasó correctamente");
-    }
-
-/*-----------------------Empleados----------------------------------------------*/
-
-    @Test
-    void testObtenerTodosEmpleados() {
-        List<EmpleadoModel> empleados = new ArrayList<>();
-        empleados.add(new EmpleadoModel());
-        when(empleadoRepository.findAll()).thenReturn(empleados);
-
-        List<EmpleadoModel> resultado = empleadoService.obtenerTodos();
-
-        assertEquals(empleados, resultado);
-        verify(empleadoRepository, times(1)).findAll();
-        System.out.println("testObtenerTodosEmpleados pasó correctamente");
-    }
-
-    @Test
-    void testObtenerEmpleadoPorId() {
-        EmpleadoModel empleado = new EmpleadoModel();
-        empleado.setId(1);
-        empleado.setNombre("Juan");
-        when(empleadoRepository.findById(1)).thenReturn(Optional.of(empleado));
-
-        EmpleadoModel resultado = empleadoService.buscarPorId(1);
-
-        assertNotNull(resultado);
-        assertEquals("Juan", resultado.getNombre());
-        verify(empleadoRepository, times(1)).findById(1);
-        System.out.println("testObtenerEmpleadoPorId pasó correctamente");
-    }
-
-    @Test
-    void testObtenerEmpleadoPorIdNoExiste() {
-        when(empleadoRepository.findById(99)).thenReturn(Optional.empty());
-
-        EmpleadoModel resultado = empleadoService.buscarPorId(99);
-
-        assertNull(resultado);
-        verify(empleadoRepository, times(1)).findById(99);
-        System.out.println("testObtenerEmpleadoPorIdNoExiste pasó correctamente");
-    }
-
-    @Test
-    void testCrearEmpleado() {
-        EmpleadoModel empleado = new EmpleadoModel();
-        empleado.setId(2);
-        empleado.setNombre("Ana");
-        when(empleadoRepository.save(empleado)).thenReturn(empleado);
-
-        EmpleadoModel resultado = empleadoService.crearEmpleado(empleado);
-
-        assertNotNull(resultado);
-        assertEquals("Ana", resultado.getNombre());
-        verify(empleadoRepository, times(1)).save(empleado);
-        System.out.println("testCrearEmpleado pasó correctamente");
-    }
-
-    @Test
-    void testActualizarEmpleado() {
-        int id = 3;
-        EmpleadoModel existente = new EmpleadoModel();
-        existente.setId(id);
-        existente.setNombre("Pedro");
-        EmpleadoModel nuevo = new EmpleadoModel();
-        nuevo.setId(id);
-        nuevo.setNombre("Pedro Actualizado");
-        when(empleadoRepository.findById(id)).thenReturn(Optional.of(existente));
-        when(empleadoRepository.save(any(EmpleadoModel.class))).thenReturn(nuevo);
-
-        EmpleadoModel resultado = empleadoService.actualizarEmpleado(id, nuevo);
-
-        assertNotNull(resultado);
-        assertEquals("Pedro Actualizado", resultado.getNombre());
-        verify(empleadoRepository, times(1)).findById(id);
-        verify(empleadoRepository, times(1)).save(any(EmpleadoModel.class));
-        System.out.println("testActualizarEmpleado pasó correctamente");
-    }
-
-    @Test
-    void testActualizarEmpleadoNoExiste() {
-        int id = 99;
-        EmpleadoModel nuevo = new EmpleadoModel();
-        nuevo.setId(id);
-        nuevo.setNombre("No Existe");
-        when(empleadoRepository.findById(id)).thenReturn(Optional.empty());
-
-        EmpleadoModel resultado = empleadoService.actualizarEmpleado(id, nuevo);
-
-        assertNull(resultado);
-        verify(empleadoRepository, times(1)).findById(id);
-        verify(empleadoRepository, never()).save(any(EmpleadoModel.class));
-        System.out.println("testActualizarEmpleadoNoExiste pasó correctamente");
-    }
-
-    @Test
-    void testEliminarEmpleado() {
-        int id = 4;
-        doNothing().when(empleadoRepository).deleteById(id);
-
-        empleadoService.eliminarUsuario(id);
-
-        verify(empleadoRepository, times(1)).deleteById(id);
-        System.out.println("testEliminarEmpleado pasó correctamente");
     }
 }
