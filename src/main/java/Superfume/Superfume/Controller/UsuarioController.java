@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import Superfume.Superfume.Model.RolModel;
 import Superfume.Superfume.Model.UsuarioModel;
+import Superfume.Superfume.Repository.RolRepository;
 import Superfume.Superfume.Service.UsuarioService;
 import Superfume.Superfume.Dto.UsuarioDto;
 import jakarta.validation.Valid;
@@ -24,10 +26,16 @@ import Superfume.Superfume.Mapper.UsuarioMapper;
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private RolRepository rolRepository;
 
     @PostMapping
     public UsuarioModel crear(@Valid @RequestBody UsuarioDto usuarioDto) {
-        return usuarioService.crearUsuario(UsuarioMapper.toEntity(usuarioDto));
+        RolModel rol = rolRepository.findById(usuarioDto.getRolId())
+            .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado"));
+        return usuarioService.crearUsuario(UsuarioMapper.toEntity(usuarioDto, rol));
     }
 
     @GetMapping
@@ -56,7 +64,10 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public UsuarioModel actualizarUsuario(@PathVariable int id, @Valid @RequestBody UsuarioDto nuevoDto) {
-        return usuarioService.actualizarUsuario(id, UsuarioMapper.toEntity(nuevoDto));
+        RolModel rol = rolRepository.findById(nuevoDto.getRolId())
+            .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado"));
+        return usuarioService.actualizarUsuario(id, UsuarioMapper.toEntity(nuevoDto, rol));
     }
 
     @DeleteMapping("/{id}")

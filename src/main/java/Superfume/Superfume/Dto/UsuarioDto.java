@@ -2,6 +2,7 @@ package Superfume.Superfume.Dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -10,8 +11,8 @@ public class UsuarioDto {
     private String nombre;
     @NotBlank @Email
     private String correo;
-    @NotBlank
-    private String rol;
+    @NotNull
+    private Integer rolId;
     @NotBlank
     private String contrasena;
 }

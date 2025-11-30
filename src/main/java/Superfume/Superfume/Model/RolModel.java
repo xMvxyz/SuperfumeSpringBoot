@@ -1,22 +1,24 @@
 package Superfume.Superfume.Model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "carrito")
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarritoModel {
+public class RolModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int idUsuario;
-    private int idPerfume;
-    private int cantidad;
-    private int precio;
-    private int idEmpleado;
+    
+    @NotBlank
+    @Column(unique = true)
+    private String nombre;
+    
+    private String descripcion;
 }

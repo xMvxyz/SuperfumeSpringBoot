@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-import Superfume.Superfume.Model.EmpleadoModel;
 import Superfume.Superfume.Model.UsuarioModel;
 import Superfume.Superfume.Model.PerfumeModel;
-import Superfume.Superfume.Service.EmpleadoService;
 import Superfume.Superfume.Service.UsuarioService;
 import Superfume.Superfume.Service.PerfumeService;
 
@@ -16,34 +14,10 @@ import Superfume.Superfume.Service.PerfumeService;
 @RequestMapping("/api")
 public class ApiController {
     @Autowired
-    private EmpleadoService empleadoService;
-    @Autowired
     private UsuarioService usuarioService;
     @Autowired
     private PerfumeService perfumeService;
     
-
-    // --- Empleado ---
-    @GetMapping("/empleados")
-    public List<EmpleadoModel> getEmpleados() {
-        return empleadoService.obtenerTodos();
-    }
-    @GetMapping("/empleados/{id}")
-    public EmpleadoModel getEmpleado(@PathVariable int id) {
-        return empleadoService.buscarPorId(id);
-    }
-    @PostMapping("/empleados")
-    public EmpleadoModel createEmpleado(@RequestBody EmpleadoModel empleado) {
-        return empleadoService.crearEmpleado(empleado);
-    }
-    @PutMapping("/empleados/{id}")
-    public EmpleadoModel updateEmpleado(@PathVariable int id, @RequestBody EmpleadoModel empleado) {
-        return empleadoService.actualizarEmpleado(id, empleado);
-    }
-    @DeleteMapping("/empleados/{id}")
-    public void deleteEmpleado(@PathVariable int id) {
-        empleadoService.eliminarUsuario(id);
-    }
 
     // --- Usuario ---
     @GetMapping("/usuarios")

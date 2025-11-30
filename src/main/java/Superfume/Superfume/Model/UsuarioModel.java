@@ -21,7 +21,9 @@ public class UsuarioModel {
     @NotBlank @Email
     private String correo;
     @NotBlank
-    private String rol;
-    @NotBlank
     private String contrasena;
+    
+    @ManyToOne
+    @JoinColumn(name = "rol_id", nullable = false)
+    private RolModel rol;
 }
