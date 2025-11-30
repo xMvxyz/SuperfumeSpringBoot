@@ -22,12 +22,10 @@ public class PedidoModel {
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioModel usuario;
     
-    @ManyToOne
-    @JoinColumn(name = "perfume_id", nullable = false)
-    private PerfumeModel perfume;
+    @OneToOne
+    @JoinColumn(name = "carrito_id")
+    private CarritoModel carrito; // Carrito que originó este pedido
     
-    private int cantidad;
-    private double precioUnitario;
     private double total;
     
     @Column(nullable = false)

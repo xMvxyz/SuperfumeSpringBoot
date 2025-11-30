@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 public class PedidoResponseDto {
     private int id;
     private UsuarioResponseDto usuario;
-    private PerfumeResponseDto perfume;
-    private int cantidad;
-    private double precioUnitario;
+    private CarritoResponseDto carrito;
     private double total;
     private LocalDateTime fechaPedido;
     private PedidoModel.EstadoPedido estado;

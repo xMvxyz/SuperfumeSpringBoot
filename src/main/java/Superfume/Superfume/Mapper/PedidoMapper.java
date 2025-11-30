@@ -2,19 +2,18 @@ package Superfume.Superfume.Mapper;
 
 import Superfume.Superfume.Dto.request.PedidoRequestDto;
 import Superfume.Superfume.Dto.response.PedidoResponseDto;
+import Superfume.Superfume.Model.CarritoModel;
 import Superfume.Superfume.Model.PedidoModel;
-import Superfume.Superfume.Model.PerfumeModel;
 import Superfume.Superfume.Model.UsuarioModel;
 
 public class PedidoMapper {
-    public static PedidoModel toEntity(PedidoRequestDto dto, UsuarioModel usuario, PerfumeModel perfume) {
-        if (dto == null) return null;
+    // Crear pedido desde un carrito
+    public static PedidoModel toEntity(CarritoModel carrito) {
+        if (carrito == null) return null;
         PedidoModel pedido = new PedidoModel();
-        pedido.setUsuario(usuario);
-        pedido.setPerfume(perfume);
-        pedido.setCantidad(dto.getCantidad());
-        pedido.setPrecioUnitario(perfume.getPrecio());
-        pedido.setTotal(perfume.getPrecio() * dto.getCantidad());
+        pedido.setUsuario(carrito.getUsuario());
+        pedido.setCarrito(carrito);
+        pedido.setTotal(carrito.calcularTotal());
         pedido.setFechaPedido(java.time.LocalDateTime.now());
         pedido.setEstado(PedidoModel.EstadoPedido.PENDIENTE);
         return pedido;
@@ -25,9 +24,11 @@ public class PedidoMapper {
         PedidoResponseDto dto = new PedidoResponseDto();
         dto.setId(pedido.getId());
         dto.setUsuario(UsuarioMapper.toResponseDto(pedido.getUsuario()));
-        dto.setPerfume(PerfumeMapper.toResponseDto(pedido.getPerfume()));
-        dto.setCantidad(pedido.getCantidad());
-        dto.setPrecioUnitario(pedido.getPrecioUnitario());
+        
+        if (pedido.getCarrito() != null) {
+            dto.setCarrito(CarritoMapper.toResponseDto(pedido.getCarrito()));
+        }
+        
         dto.setTotal(pedido.getTotal());
         dto.setFechaPedido(pedido.getFechaPedido());
         dto.setEstado(pedido.getEstado());

@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import Superfume.Superfume.Dto.request.PedidoRequestDto;
 import Superfume.Superfume.Dto.response.PedidoResponseDto;
 import Superfume.Superfume.Mapper.PedidoMapper;
+import Superfume.Superfume.Model.CarritoModel;
 import Superfume.Superfume.Model.PedidoModel;
-import Superfume.Superfume.Model.PerfumeModel;
-import Superfume.Superfume.Model.UsuarioModel;
-import Superfume.Superfume.Repository.PerfumeRepository;
-import Superfume.Superfume.Repository.UsuarioRepository;
+import Superfume.Superfume.Repository.CarritoRepository;
 import Superfume.Superfume.Service.PedidoService;
 import jakarta.validation.Valid;
 
@@ -27,33 +25,26 @@ public class PedidoController {
     private PedidoService pedidoService;
     
     @Autowired
-    private UsuarioRepository usuarioRepository;
-    
-    @Autowired
-    private PerfumeRepository perfumeRepository;
+    private CarritoRepository carritoRepository;
 
+    // Crear pedido desde un carrito
     @PostMapping
     public PedidoResponseDto crear(@Valid @RequestBody PedidoRequestDto pedidoDto) {
-        UsuarioModel usuario = usuarioRepository.findById(pedidoDto.getUsuarioId())
+        CarritoModel carrito = carritoRepository.findById(pedidoDto.getCarritoId())
             .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST, "Usuario no encontrado"));
+                org.springframework.http.HttpStatus.BAD_REQUEST, "Carrito no encontrado"));
         
-        PerfumeModel perfume = perfumeRepository.findById(pedidoDto.getPerfumeId())
-            .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST, "Perfume no encontrado"));
-        
-        // Verificar stock disponible
-        if (perfume.getStock() < pedidoDto.getCantidad()) {
+        if (carrito.getEstado() != CarritoModel.EstadoCarrito.ACTIVO) {
             throw new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST, "Stock insuficiente");
+                org.springframework.http.HttpStatus.BAD_REQUEST, "El carrito no está activo");
         }
         
-        PedidoModel pedido = pedidoService.crearPedido(PedidoMapper.toEntity(pedidoDto, usuario, perfume));
+        if (carrito.getItems() == null || carrito.getItems().isEmpty()) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.BAD_REQUEST, "El carrito está vacío");
+        }
         
-        // Actualizar stock
-        perfume.setStock(perfume.getStock() - pedidoDto.getCantidad());
-        perfumeRepository.save(perfume);
-        
+        PedidoModel pedido = pedidoService.crearPedidoDesdeCarrito(carrito);
         return PedidoMapper.toResponseDto(pedido);
     }
 
