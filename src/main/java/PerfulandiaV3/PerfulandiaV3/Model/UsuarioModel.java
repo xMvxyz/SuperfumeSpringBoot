@@ -1,16 +1,12 @@
 package PerfulandiaV3.PerfulandiaV3.Model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+
 @Entity
 @Table(name = "usuarios")
 @Data
@@ -28,20 +24,4 @@ public class UsuarioModel {
     private String rol;
     @NotBlank
     private String contrasena;
-
-    // Getters y setters explícitos (compatibilidad con IDEs sin procesador Lombok)
-    public int getId() { return this.id; }
-    public void setId(int id) { this.id = id; }
-
-    public String getNombre() { return this.nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public String getCorreo() { return this.correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
-
-    public String getRol() { return this.rol; }
-    public void setRol(String rol) { this.rol = rol; }
-
-    public String getContrasena() { return this.contrasena; }
-    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 }

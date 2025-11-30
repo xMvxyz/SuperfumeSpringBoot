@@ -6,12 +6,7 @@ import PerfulandiaV3.PerfulandiaV3.Model.PerfumeModel;
 public class PerfumeMapper {
     public static PerfumeModel toEntity(PerfumeDto dto) {
         if (dto == null) return null;
-        PerfumeModel p = new PerfumeModel();
-        p.setNombre(dto.getNombre());
-        p.setMarca(dto.getMarca());
-        p.setPrecio(dto.getPrecio());
-        p.setCantidad(dto.getCantidad());
-        return p;
+        return new PerfumeModel(0, dto.getNombre(), dto.getMarca(), dto.getPrecio(), dto.getCantidad());
     }
 
     public static PerfumeDto toDto(PerfumeModel p) {

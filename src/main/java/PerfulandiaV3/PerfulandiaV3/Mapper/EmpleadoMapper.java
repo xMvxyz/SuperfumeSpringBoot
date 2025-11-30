@@ -6,14 +6,8 @@ import PerfulandiaV3.PerfulandiaV3.Model.EmpleadoModel;
 public class EmpleadoMapper {
     public static EmpleadoModel toEntity(EmpleadoDto dto) {
         if (dto == null) return null;
-        EmpleadoModel e = new EmpleadoModel();
-        e.setNombre(dto.getNombre());
-        e.setCorreo(dto.getCorreo());
-        e.setContrasena(dto.getContrasena());
-        e.setIdEmpleado(dto.getIdEmpleado());
-        e.setSucursal(dto.getSucursal());
-        e.setActivo(dto.isActivo());
-        return e;
+        return new EmpleadoModel(0, dto.getNombre(), dto.getCorreo(), dto.getContrasena(), 
+                                dto.getIdEmpleado(), dto.getSucursal(), dto.isActivo());
     }
 
     public static EmpleadoDto toDto(EmpleadoModel e) {
