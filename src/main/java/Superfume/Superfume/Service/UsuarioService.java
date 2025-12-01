@@ -26,7 +26,6 @@ public class UsuarioService {
     public UsuarioModel actualizarUsuario(int id, UsuarioModel nuevo) {
         UsuarioModel existente = usuarioRepository.findById(id).orElse(null);
         if (existente != null) {
-            existente.setId(nuevo.getId());
             existente.setNombre(nuevo.getNombre());
             existente.setCorreo(nuevo.getCorreo());
             existente.setRol(nuevo.getRol());
@@ -35,7 +34,7 @@ public class UsuarioService {
             existente.setDireccion(nuevo.getDireccion());
             return usuarioRepository.save(existente);
         }
-        return null;
+        throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Usuario no encontrado");
     }
 
     public void eliminarUsuario(int id) {
