@@ -28,6 +28,8 @@ public class CarritoModel {
     
     private LocalDateTime fechaCreacion;
     
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
     private EstadoCarrito estado;
     
     public enum EstadoCarrito {
