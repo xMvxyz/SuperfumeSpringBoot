@@ -14,6 +14,8 @@ public class PerfumeMapper {
         p.setStock(dto.getStock());
         p.setDescripcion(dto.getDescripcion());
         p.setCategoria(dto.getCategoria());
+        p.setImagenUrl(dto.getImagenUrl());
+        p.setGenero(dto.getGenero());
         return p;
     }
 
@@ -27,6 +29,8 @@ public class PerfumeMapper {
         dto.setStock(p.getStock());
         dto.setDescripcion(p.getDescripcion());
         dto.setCategoria(p.getCategoria());
+        dto.setImagenUrl(p.getImagenUrl());
+        dto.setGenero(p.getGenero());
         return dto;
     }
 }

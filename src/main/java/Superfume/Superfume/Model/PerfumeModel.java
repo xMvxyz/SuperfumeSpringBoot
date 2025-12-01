@@ -25,6 +25,11 @@ public class PerfumeModel {
     @NotBlank
     private String marca;
     
+    @Column(name = "imagen_url")
+    private String imagenUrl;
+
+    private String genero;
+    
     @Min(0)
     private double precio;
     

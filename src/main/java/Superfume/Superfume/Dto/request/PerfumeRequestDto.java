@@ -23,4 +23,6 @@ public class PerfumeRequestDto {
     
     private String descripcion;
     private String categoria;
+    private String imagenUrl;
+    private String genero;
 }
