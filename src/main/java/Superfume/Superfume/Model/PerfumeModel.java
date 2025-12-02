@@ -26,7 +26,7 @@ public class PerfumeModel {
     private String marca;
     
     @Column(name = "imagen_url")
-    private String imagenUrl;
+    private String imagenUrl = "/img/producto_01.jpg";
 
     private String genero;
     
@@ -34,8 +34,8 @@ public class PerfumeModel {
     private double precio;
     
     @Min(0)
-    private int stock;
+    private int stock = 0;
     
     private String descripcion;
-    private String categoria;
+    private String categoria = "Sin categoría";
 }

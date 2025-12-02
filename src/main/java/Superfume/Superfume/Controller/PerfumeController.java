@@ -1,10 +1,8 @@
 package Superfume.Superfume.Controller;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,16 +25,10 @@ public class PerfumeController {
     private PerfumeService perfumeService;
 
     @GetMapping
-    public CollectionModel<EntityModel<PerfumeResponseDto>> listar() {
-        var perfumes = perfumeService.obtenerTodos().stream()
+    public List<PerfumeResponseDto> listar() {
+        return perfumeService.obtenerTodos().stream()
             .map(PerfumeMapper::toResponseDto)
-            .map(perfume -> EntityModel.of(perfume,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).buscarPorId(perfume.getId())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).listar()).withRel("perfumes")
-            )).collect(Collectors.toList());
-        return CollectionModel.of(perfumes,
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).listar()).withSelfRel()
-        );
+            .collect(Collectors.toList());
     }
 
     @PostMapping
@@ -46,16 +38,12 @@ public class PerfumeController {
     }
 
     @GetMapping("/{id}")
-    public EntityModel<PerfumeResponseDto> buscarPorId(@PathVariable int id) {
+    public PerfumeResponseDto buscarPorId(@PathVariable int id) {
         PerfumeModel perfume = perfumeService.buscarPorId(id);
         if (perfume == null) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Perfume no encontrado");
         }
-        PerfumeResponseDto dto = PerfumeMapper.toResponseDto(perfume);
-        return EntityModel.of(dto,
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).buscarPorId(id)).withSelfRel(),
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(PerfumeController.class).listar()).withRel("perfumes")
-        );
+        return PerfumeMapper.toResponseDto(perfume);
     }
 
     @PutMapping("/{id}")

@@ -25,13 +25,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponseDto login(@Valid @RequestBody LoginRequestDto loginDto) {
-        UsuarioModel usuario = usuarioService.buscarPorCorreo(loginDto.getCorreo());
+        UsuarioModel usuario = usuarioService.buscarPorCorreo(loginDto.getEmail());
         
         if (usuario == null) {
             return new LoginResponseDto(false, "Usuario no encontrado", null);
         }
         
-        if (!usuario.getContrasena().equals(loginDto.getContrasena())) {
+        if (!usuario.getContrasena().equals(loginDto.getPassword())) {
             return new LoginResponseDto(false, "Contraseña incorrecta", null);
         }
         
@@ -40,29 +40,31 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UsuarioResponseDto register(@Valid @RequestBody RegisterRequestDto registerDto) {
+    public LoginResponseDto register(@Valid @RequestBody RegisterRequestDto registerDto) {
         // Verificar si el correo ya existe
-        UsuarioModel usuarioExistente = usuarioService.buscarPorCorreo(registerDto.getCorreo());
+        UsuarioModel usuarioExistente = usuarioService.buscarPorCorreo(registerDto.getEmail());
         if (usuarioExistente != null) {
-            throw new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST, "El correo ya está registrado");
+            return new LoginResponseDto(false, "El email ya está registrado", null);
         }
         
-        // Buscar el rol
-        RolModel rol = rolRepository.findById(registerDto.getRolId())
-            .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado"));
+        // Obtener rol: si es admin.com, admin, sino cliente
+        String roleStr = registerDto.getRole() != null ? registerDto.getRole() : "cliente";
+        RolModel rol = rolRepository.findByNombre(roleStr)
+            .orElse(rolRepository.findByNombre("cliente")
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado")));
         
         // Crear el usuario
         UsuarioModel nuevoUsuario = new UsuarioModel();
-        nuevoUsuario.setNombre(registerDto.getNombre());
-        nuevoUsuario.setCorreo(registerDto.getCorreo());
-        nuevoUsuario.setContrasena(registerDto.getContrasena());
-        nuevoUsuario.setTelefono(registerDto.getTelefono());
-        nuevoUsuario.setDireccion(registerDto.getDireccion());
+        nuevoUsuario.setNombre(registerDto.getName());
+        nuevoUsuario.setCorreo(registerDto.getEmail());
+        nuevoUsuario.setContrasena(registerDto.getPassword());
+        nuevoUsuario.setTelefono(registerDto.getPhone());
+        nuevoUsuario.setDireccion(registerDto.getAddress());
         nuevoUsuario.setRol(rol);
         
         UsuarioModel usuarioCreado = usuarioService.crearUsuario(nuevoUsuario);
-        return UsuarioMapper.toResponseDto(usuarioCreado);
+        UsuarioResponseDto usuarioDto = UsuarioMapper.toResponseDto(usuarioCreado);
+        return new LoginResponseDto(true, "Registro exitoso", usuarioDto);
     }
 }
