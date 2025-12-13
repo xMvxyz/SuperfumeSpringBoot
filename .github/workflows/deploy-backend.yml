@@ -30,7 +30,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           source: "target/Superfume-0.0.1-SNAPSHOT.jar"
-          target: "/home/ec2-user/app/"
+          target: "/home/ec2-user/app/Superfume-backend.jar"
+          use_insecure_cipher: true
 
       - name: Deploy and restart backend on EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -38,26 +39,21 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
+          use_insecure_cipher: true
           script: |
-            # Crear directorio si no existe
             mkdir -p /home/ec2-user/app
             
-            # Detener la aplicación anterior
-            pkill -f "Superfume-0.0.1-SNAPSHOT.jar" || true
+            pkill -f "Superfume-backend.jar" || true
             sleep 2
             
-            # Verificar que Java está instalado
             java -version
             
-            # Iniciar la aplicación en background
             cd /home/ec2-user/app
-            nohup java -jar Superfume-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            nohup java -jar Superfume-backend.jar > app.log 2>&1 &
             
-            # Esperar un momento para verificar el inicio
             sleep 5
             
-            # Verificar que el proceso está corriendo
-            if pgrep -f "Superfume-0.0.1-SNAPSHOT.jar" > /dev/null; then
+            if pgrep -f "Superfume-backend.jar" > /dev/null; then
               echo "Backend desplegado y ejecutándose correctamente"
             else
               echo "Error: El backend no pudo iniciarse"
