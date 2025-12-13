@@ -49,8 +49,10 @@ public class AuthController {
         
         // Obtener rol: si es admin.com, admin, sino cliente
         String roleStr = registerDto.getRole() != null ? registerDto.getRole() : "cliente";
-        RolModel rol = rolRepository.findByNombre(roleStr)
-            .orElse(rolRepository.findByNombre("cliente")
+        // Capitalizar primera letra para coincidir con la BD
+        String roleCapitalized = roleStr.substring(0, 1).toUpperCase() + roleStr.substring(1).toLowerCase();
+        RolModel rol = rolRepository.findByNombre(roleCapitalized)
+            .orElse(rolRepository.findByNombre("Cliente")
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                     org.springframework.http.HttpStatus.BAD_REQUEST, "Rol no encontrado")));
         
