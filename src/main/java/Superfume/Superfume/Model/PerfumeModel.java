@@ -29,6 +29,15 @@ public class PerfumeModel {
     private String imagenUrl = "/img/producto_01.jpg";
 
     private String genero;
+
+    @NotBlank
+    private String fragancia;
+    
+    @NotBlank
+    private String notas;
+    
+    @NotBlank
+    private String perfil;
     
     @Min(0)
     private double precio;
@@ -37,5 +46,4 @@ public class PerfumeModel {
     private int stock = 0;
     
     private String descripcion;
-    private String categoria = "Sin categoría";
 }
