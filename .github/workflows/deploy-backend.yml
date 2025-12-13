@@ -41,6 +41,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           use_insecure_cipher: true
+          script_stop: true
           script: |
             echo "Limpiando procesos anteriores"
             pkill -f "Superfume-backend.jar" || true
@@ -54,13 +55,15 @@ jobs:
 
             echo "Iniciando backend"
             cd /home/ec2-user/app
-            nohup java -jar Superfume-backend.jar > app.log 2>&1 &
-
+            nohup java -jar Superfume-backend.jar > app.log 2>&1 </dev/null &
+            BACKEND_PID=$!
+            
             sleep 5
 
             echo "Verificando ejecución"
             if pgrep -f "Superfume-backend.jar" > /dev/null; then
-              echo "Backend desplegado y ejecutándose correctamente"
+              echo "Backend desplegado y ejecutándose correctamente (PID: $BACKEND_PID)"
+              exit 0
             else
               echo "Error: El backend no pudo iniciarse"
               tail -n 50 app.log
