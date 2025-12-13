@@ -10,7 +10,9 @@ public class PerfumeResponseDto {
     private Double precio;
     private Integer stock;
     private String descripcion;
-    private String categoria;
     private String imagenUrl;
     private String genero;
+    private String fragancia;
+    private String notas;
+    private String perfil;
 }
