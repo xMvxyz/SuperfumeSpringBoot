@@ -24,6 +24,7 @@ public class UsuarioModel {
     private String correo;
     @NotBlank
     private String contrasena;
+    private String rut;
     private String telefono;
     private String direccion;
     
