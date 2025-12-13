@@ -16,6 +16,7 @@ public class PerfumeMapper {
         p.setCategoria(dto.getCategoria());
         p.setImagenUrl(dto.getImagenUrl());
         p.setGenero(dto.getGenero());
+        p.setFragancia(dto.getFragancia());
         return p;
     }
 
@@ -31,6 +32,7 @@ public class PerfumeMapper {
         dto.setCategoria(p.getCategoria());
         dto.setImagenUrl(p.getImagenUrl());
         dto.setGenero(p.getGenero());
+        dto.setFragancia(p.getFragancia());
         return dto;
     }
 }
