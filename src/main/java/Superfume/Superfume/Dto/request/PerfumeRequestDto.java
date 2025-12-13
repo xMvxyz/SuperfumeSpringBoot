@@ -22,7 +22,15 @@ public class PerfumeRequestDto {
     private Integer stock;
     
     private String descripcion;
-    private String categoria;
     private String imagenUrl;
     private String genero;
+    
+    @NotBlank
+    private String fragancia;
+    
+    @NotBlank
+    private String notas;
+    
+    @NotBlank
+    private String perfil;
 }
