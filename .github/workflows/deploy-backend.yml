@@ -1,0 +1,66 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Copy JAR to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          source: "target/Superfume-0.0.1-SNAPSHOT.jar"
+          target: "/home/ec2-user/app/"
+
+      - name: Deploy and restart backend on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            # Crear directorio si no existe
+            mkdir -p /home/ec2-user/app
+            
+            # Detener la aplicación anterior
+            pkill -f "Superfume-0.0.1-SNAPSHOT.jar" || true
+            sleep 2
+            
+            # Verificar que Java está instalado
+            java -version
+            
+            # Iniciar la aplicación en background
+            cd /home/ec2-user/app
+            nohup java -jar Superfume-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            
+            # Esperar un momento para verificar el inicio
+            sleep 5
+            
+            # Verificar que el proceso está corriendo
+            if pgrep -f "Superfume-0.0.1-SNAPSHOT.jar" > /dev/null; then
+              echo "Backend desplegado y ejecutándose correctamente"
+            else
+              echo "Error: El backend no pudo iniciarse"
+              tail -n 50 app.log
+              exit 1
+            fi
