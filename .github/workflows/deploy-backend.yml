@@ -30,8 +30,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           source: "target/Superfume-0.0.1-SNAPSHOT.jar"
-          target: "/home/ec2-user/app/Superfume-backend.jar"
-          use_insecure_cipher: true
+          target: "/home/ec2-user/app/"
 
       - name: Deploy and restart backend on EC2
         uses: appleboy/ssh-action@v1.0.3
