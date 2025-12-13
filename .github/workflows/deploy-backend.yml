@@ -34,6 +34,37 @@ jobs:
           target: "/home/ec2-user/app/"   #SIEMPRE carpeta
           use_insecure_cipher: true
 
+      - name: Crear servicio systemd (primera vez)
+        uses: appleboy/ssh-action@v1.0.3
+        continue-on-error: true
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          use_insecure_cipher: true
+          script: |
+            sudo tee /etc/systemd/system/superfume-backend.service > /dev/null <<EOF
+            [Unit]
+            Description=Superfume Backend Service
+            After=network.target
+
+            [Service]
+            Type=simple
+            User=ec2-user
+            WorkingDirectory=/home/ec2-user/app
+            ExecStart=/usr/bin/java -jar /home/ec2-user/app/Superfume-backend.jar
+            Restart=always
+            RestartSec=10
+            StandardOutput=append:/home/ec2-user/app/app.log
+            StandardError=append:/home/ec2-user/app/app.log
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            
+            sudo systemctl daemon-reload
+            sudo systemctl enable superfume-backend.service
+
       - name: Desplegar e iniciar backend en EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -41,30 +72,25 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           use_insecure_cipher: true
-          script_stop: true
           script: |
-            echo "Limpiando procesos anteriores"
-            pkill -f "Superfume-backend.jar" || true
-            sleep 2
-
-            echo "Asegurando carpeta"
+            echo "Preparando carpeta"
             mkdir -p /home/ec2-user/app
-
-            echo "Renombrando JAR"
-            mv /home/ec2-user/app/Superfume-0.0.1-SNAPSHOT.jar /home/ec2-user/app/Superfume-backend.jar
-
-            echo "Iniciando backend"
-            cd /home/ec2-user/app
-            setsid nohup java -jar Superfume-backend.jar > app.log 2>&1 < /dev/null &
+            
+            echo "Copiando nuevo JAR"
+            cp /home/ec2-user/app/Superfume-0.0.1-SNAPSHOT.jar /home/ec2-user/app/Superfume-backend.jar
+            
+            echo "Reiniciando servicio"
+            sudo systemctl restart superfume-backend.service
             
             sleep 5
-
-            echo "Verificando ejecución"
-            if pgrep -f "Superfume-backend.jar" > /dev/null; then
-              echo "Backend desplegado y ejecutándose correctamente"
-              exit 0
+            
+            echo "Verificando estado"
+            if sudo systemctl is-active --quiet superfume-backend.service; then
+              echo "Backend desplegado correctamente"
+              sudo systemctl status superfume-backend.service --no-pager
             else
-              echo "Error: El backend no pudo iniciarse"
-              tail -n 50 app.log
+              echo "Error al iniciar el servicio"
+              sudo systemctl status superfume-backend.service --no-pager
+              tail -n 50 /home/ec2-user/app/app.log
               exit 1
             fi
