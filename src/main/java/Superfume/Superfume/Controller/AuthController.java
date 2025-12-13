@@ -59,6 +59,7 @@ public class AuthController {
         nuevoUsuario.setNombre(registerDto.getName());
         nuevoUsuario.setCorreo(registerDto.getEmail());
         nuevoUsuario.setContrasena(registerDto.getPassword());
+        nuevoUsuario.setRut(registerDto.getRut());
         nuevoUsuario.setTelefono(registerDto.getPhone());
         nuevoUsuario.setDireccion(registerDto.getAddress());
         nuevoUsuario.setRol(rol);
