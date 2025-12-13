@@ -13,10 +13,11 @@ public class PerfumeMapper {
         p.setPrecio(dto.getPrecio());
         p.setStock(dto.getStock());
         p.setDescripcion(dto.getDescripcion());
-        p.setCategoria(dto.getCategoria());
         p.setImagenUrl(dto.getImagenUrl());
         p.setGenero(dto.getGenero());
         p.setFragancia(dto.getFragancia());
+        p.setNotas(dto.getNotas());
+        p.setPerfil(dto.getPerfil());
         return p;
     }
 
@@ -29,10 +30,11 @@ public class PerfumeMapper {
         dto.setPrecio(p.getPrecio());
         dto.setStock(p.getStock());
         dto.setDescripcion(p.getDescripcion());
-        dto.setCategoria(p.getCategoria());
         dto.setImagenUrl(p.getImagenUrl());
         dto.setGenero(p.getGenero());
         dto.setFragancia(p.getFragancia());
+        dto.setNotas(p.getNotas());
+        dto.setPerfil(p.getPerfil());
         return dto;
     }
 }

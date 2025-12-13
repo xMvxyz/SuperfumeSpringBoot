@@ -31,10 +31,11 @@ public class PerfumeService {
             existente.setPrecio(nuevo.getPrecio());
             existente.setStock(nuevo.getStock());
             existente.setDescripcion(nuevo.getDescripcion());
-            existente.setCategoria(nuevo.getCategoria());
             existente.setImagenUrl(nuevo.getImagenUrl());
             existente.setGenero(nuevo.getGenero());
             existente.setFragancia(nuevo.getFragancia());
+            existente.setNotas(nuevo.getNotas());
+            existente.setPerfil(nuevo.getPerfil());
             return perfumeRepository.save(existente);
         }
         return null;
