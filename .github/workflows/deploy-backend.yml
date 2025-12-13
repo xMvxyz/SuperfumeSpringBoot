@@ -55,14 +55,13 @@ jobs:
 
             echo "Iniciando backend"
             cd /home/ec2-user/app
-            nohup java -jar Superfume-backend.jar > app.log 2>&1 </dev/null &
-            BACKEND_PID=$!
+            setsid nohup java -jar Superfume-backend.jar > app.log 2>&1 < /dev/null &
             
             sleep 5
 
             echo "Verificando ejecución"
             if pgrep -f "Superfume-backend.jar" > /dev/null; then
-              echo "Backend desplegado y ejecutándose correctamente (PID: $BACKEND_PID)"
+              echo "Backend desplegado y ejecutándose correctamente"
               exit 0
             else
               echo "Error: El backend no pudo iniciarse"
