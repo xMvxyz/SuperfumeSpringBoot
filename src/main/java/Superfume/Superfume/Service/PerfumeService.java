@@ -26,13 +26,15 @@ public class PerfumeService {
     public PerfumeModel actualizarPerfume(int id, PerfumeModel nuevo) {
         PerfumeModel existente = perfumeRepository.findById(id).orElse(null);
         if (existente != null) {
-            existente.setId(nuevo.getId());
             existente.setNombre(nuevo.getNombre());
             existente.setMarca(nuevo.getMarca());
             existente.setPrecio(nuevo.getPrecio());
             existente.setStock(nuevo.getStock());
             existente.setDescripcion(nuevo.getDescripcion());
             existente.setCategoria(nuevo.getCategoria());
+            existente.setImagenUrl(nuevo.getImagenUrl());
+            existente.setGenero(nuevo.getGenero());
+            existente.setFragancia(nuevo.getFragancia());
             return perfumeRepository.save(existente);
         }
         return null;
