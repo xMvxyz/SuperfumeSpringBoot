@@ -21,8 +21,8 @@ public class RegisterRequestDto {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
     
+    private String rut;
     private String phone;
-    
     private String address;
     
     private String role;
