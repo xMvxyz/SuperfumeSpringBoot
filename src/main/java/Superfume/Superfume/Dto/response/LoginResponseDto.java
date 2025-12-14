@@ -11,4 +11,11 @@ public class LoginResponseDto {
     private boolean success;
     private String mensaje;
     private UsuarioResponseDto usuario;
+    private String token;
+    
+    public LoginResponseDto(boolean success, String mensaje, UsuarioResponseDto usuario) {
+        this.success = success;
+        this.mensaje = mensaje;
+        this.usuario = usuario;
+    }
 }

@@ -12,6 +12,7 @@ import Superfume.Superfume.Model.RolModel;
 import Superfume.Superfume.Model.UsuarioModel;
 import Superfume.Superfume.Repository.RolRepository;
 import Superfume.Superfume.Service.UsuarioService;
+import Superfume.Superfume.util.JwtUtil;
 import jakarta.validation.Valid;
 
 @RestController
@@ -22,6 +23,9 @@ public class AuthController {
     
     @Autowired
     private RolRepository rolRepository;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public LoginResponseDto login(@Valid @RequestBody LoginRequestDto loginDto) {
@@ -35,8 +39,15 @@ public class AuthController {
             return new LoginResponseDto(false, "Contraseña incorrecta", null);
         }
         
+        // Generar token JWT
+        String token = jwtUtil.generateToken(
+            usuario.getCorreo(), 
+            usuario.getRol().getNombre(), 
+            (long) usuario.getId()
+        );
+        
         UsuarioResponseDto usuarioDto = UsuarioMapper.toResponseDto(usuario);
-        return new LoginResponseDto(true, "Login exitoso", usuarioDto);
+        return new LoginResponseDto(true, "Login exitoso", usuarioDto, token);
     }
 
     @PostMapping("/register")
@@ -67,7 +78,15 @@ public class AuthController {
         nuevoUsuario.setRol(rol);
         
         UsuarioModel usuarioCreado = usuarioService.crearUsuario(nuevoUsuario);
+        
+        // Generar token JWT para el nuevo usuario
+        String token = jwtUtil.generateToken(
+            usuarioCreado.getCorreo(), 
+            usuarioCreado.getRol().getNombre(), 
+            (long) usuarioCreado.getId()
+        );
+        
         UsuarioResponseDto usuarioDto = UsuarioMapper.toResponseDto(usuarioCreado);
-        return new LoginResponseDto(true, "Registro exitoso", usuarioDto);
+        return new LoginResponseDto(true, "Registro exitoso", usuarioDto, token);
     }
 }
