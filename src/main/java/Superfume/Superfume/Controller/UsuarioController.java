@@ -19,11 +19,13 @@ import Superfume.Superfume.Model.RolModel;
 import Superfume.Superfume.Model.UsuarioModel;
 import Superfume.Superfume.Repository.RolRepository;
 import Superfume.Superfume.Service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import Superfume.Superfume.Mapper.UsuarioMapper;
 
 @RestController
 @RequestMapping("/usuario")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
