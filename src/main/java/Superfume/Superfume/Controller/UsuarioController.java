@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 import Superfume.Superfume.Mapper.UsuarioMapper;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/api/usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;

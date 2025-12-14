@@ -14,7 +14,7 @@ import Superfume.Superfume.Service.CarritoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/carrito")
+@RequestMapping("/api/carrito")
 public class CarritoController {
     @Autowired
     private CarritoService carritoService;

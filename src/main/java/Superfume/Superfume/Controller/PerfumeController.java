@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import Superfume.Superfume.Mapper.PerfumeMapper;
 
 @RestController
-@RequestMapping("/perfumes")
+@RequestMapping("/api/perfumes")
 public class PerfumeController {
     @Autowired
     private PerfumeService perfumeService;

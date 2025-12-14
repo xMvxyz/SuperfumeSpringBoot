@@ -19,7 +19,7 @@ import Superfume.Superfume.Service.PagoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/pago")
+@RequestMapping("/api/pago")
 public class PagoController {
     @Autowired
     private PagoService pagoService;

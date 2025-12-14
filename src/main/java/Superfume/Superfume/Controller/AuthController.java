@@ -16,7 +16,7 @@ import Superfume.Superfume.util.JwtUtil;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private UsuarioService usuarioService;

@@ -19,7 +19,7 @@ import Superfume.Superfume.Service.PedidoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/api/pedido")
 public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
