@@ -11,8 +11,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar repositorio
+      - name: Descargar repositorio Backend
         uses: actions/checkout@v4
+        with:
+          path: backend
+
+      - name: Descargar repositorio Frontend
+        uses: actions/checkout@v4 
+        with:
+          repository: xMvxyz/SuperfumeReact
+          ref: main
+          path: frontend
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/react-app/package-lock.json
+
+      - name: Compilar Frontend
+        working-directory: ./frontend/react-app
+        run: |
+          echo "Instalando dependencias del frontend..."
+          npm ci
+          echo "Compilando frontend para producción..."
+          npm run build
+          echo "Frontend compilado exitosamente"
+          ls -la dist/
+
+      - name: Copiar Frontend a recursos estáticos del Backend
+        run: |
+          echo "Copiando frontend al backend..."
+          mkdir -p backend/src/main/resources/static
+          cp -r frontend/react-app/dist/* backend/src/main/resources/static/
+          echo "Archivos copiados exitosamente"
+          ls -la backend/src/main/resources/static/
 
       - name: Configurar JDK 17
         uses: actions/setup-java@v4
@@ -21,8 +56,13 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Compilar con Maven
-        run: mvn clean package -DskipTests
+      - name: Compilar Backend con Frontend embebido
+        working-directory: ./backend
+        run: |
+          echo "Compilando backend con frontend embebido..."
+          mvn clean package -DskipTests
+          echo "Compilación completada"
+          ls -la target/
 
       - name: Copiar JAR a EC2
         uses: appleboy/scp-action@v0.1.7
@@ -30,7 +70,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
-          source: "target/Superfume-0.0.1-SNAPSHOT.jar"
+          source: "backend/target/Superfume-0.0.1-SNAPSHOT.jar"
           target: "/home/ec2-user/app/"   #SIEMPRE carpeta
           use_insecure_cipher: true
 
@@ -76,9 +116,9 @@ jobs:
             echo "Preparando carpeta"
             mkdir -p /home/ec2-user/app
             
-            echo "Moviendo JAR"
-            mv /home/ec2-user/app/target/Superfume-0.0.1-SNAPSHOT.jar /home/ec2-user/app/Superfume-backend.jar
-            rm -rf /home/ec2-user/app/target
+            echo "Moviendo JAR con frontend embebido"
+            mv /home/ec2-user/app/backend/target/Superfume-0.0.1-SNAPSHOT.jar /home/ec2-user/app/Superfume-backend.jar
+            rm -rf /home/ec2-user/app/backend
             
             echo "Reiniciando servicio"
             sudo systemctl restart superfume-backend.service
