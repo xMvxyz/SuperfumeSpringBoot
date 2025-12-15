@@ -14,11 +14,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
-                .addPathPatterns("/api/**")
+                .addPathPatterns("/**")
                 .excludePathPatterns(
-                    "/api/auth/**",
-                    "/api/perfumes",
-                    "/api/perfumes/**",
+                    "/auth/**",
+                    "/perfumes",
+                    "/perfumes/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/swagger-ui.html",
