@@ -92,6 +92,8 @@ jobs:
             Type=simple
             User=ec2-user
             WorkingDirectory=/home/ec2-user/app
+            Environment="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+            Environment="JWT_SECRET=${{ secrets.JWT_SECRET }}"
             ExecStart=/usr/bin/java -jar /home/ec2-user/app/Superfume-backend.jar
             Restart=always
             RestartSec=10
