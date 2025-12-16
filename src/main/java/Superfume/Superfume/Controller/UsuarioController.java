@@ -1,10 +1,8 @@
 package Superfume.Superfume.Controller;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,29 +39,19 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<UsuarioResponseDto>> listar() {
-        var usuarios = usuarioService.obtenerTodos().stream()
+    public List<UsuarioResponseDto> listar() {
+        return usuarioService.obtenerTodos().stream()
             .map(UsuarioMapper::toResponseDto)
-            .map(usuario -> EntityModel.of(usuario,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscarPorId(usuario.getId())).withSelfRel(),
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).listar()).withRel("usuarios")
-            )).collect(Collectors.toList());
-        return CollectionModel.of(usuarios,
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).listar()).withSelfRel()
-        );
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public EntityModel<UsuarioResponseDto> buscarPorId(@PathVariable int id) {
+    public UsuarioResponseDto buscarPorId(@PathVariable int id) {
         UsuarioModel usuario = usuarioService.buscarPorId(id);
         if (usuario == null) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Usuario no encontrado");
         }
-        UsuarioResponseDto dto = UsuarioMapper.toResponseDto(usuario);
-        return EntityModel.of(dto,
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscarPorId(id)).withSelfRel(),
-            WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).listar()).withRel("usuarios")
-        );
+        return UsuarioMapper.toResponseDto(usuario);
     }
 
     @PutMapping("/{id}")
