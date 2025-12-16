@@ -59,10 +59,8 @@ jobs:
       - name: Compilar Backend con Frontend embebido
         working-directory: ./backend
         run: |
-          echo "Compilando backend con frontend embebido..."
           mvn clean package -DskipTests
-          echo "Compilación completada"
-          ls -la target/
+          mv target/Superfume-0.0.1-SNAPSHOT.jar target/Superfume-deploy.jar
 
       - name: Copiar JAR a EC2
         uses: appleboy/scp-action@v0.1.7
@@ -70,7 +68,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
-          source: "backend/target/Superfume-0.0.1-SNAPSHOT.jar"
+          source: "backend/target/Superfume-deploy.jar"
           target: "/home/ec2-user/app/"   #SIEMPRE carpeta
           use_insecure_cipher: true
 
@@ -94,7 +92,7 @@ jobs:
             WorkingDirectory=/home/ec2-user/app
             Environment="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
             Environment="JWT_SECRET=${{ secrets.JWT_SECRET }}"
-            ExecStart=/usr/bin/java -jar /home/ec2-user/app/Superfume-backend.jar
+            ExecStart=/usr/bin/java -jar /home/ec2-user/app/Superfume-deploy.jar
             Restart=always
             RestartSec=10
             StandardOutput=append:/home/ec2-user/app/app.log
@@ -119,7 +117,7 @@ jobs:
             mkdir -p /home/ec2-user/app
             
             echo "Moviendo JAR con frontend embebido"
-            mv /home/ec2-user/app/backend/target/Superfume-0.0.1-SNAPSHOT.jar /home/ec2-user/app/Superfume-backend.jar
+            mv /home/ec2-user/app/backend/target/Superfume-deploy.jar /home/ec2-user/app/Superfume-deploy.jar
             rm -rf /home/ec2-user/app/backend
             
             echo "Reiniciando servicio"
