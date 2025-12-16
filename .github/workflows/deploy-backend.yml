@@ -37,7 +37,7 @@ jobs:
           echo "Instalando dependencias del frontend..."
           npm ci
           echo "Compilando frontend para producción..."
-          NODE_ENV=development npm run build
+          npm run build
           echo "Frontend compilado exitosamente"
           ls -la dist/
 
